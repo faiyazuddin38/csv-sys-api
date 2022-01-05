@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6e05b6e2-924e-47f4-af23-e61c7e1209fe" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="csv-gitFlow" doc:id="95bf8616-51de-4540-8ca6-cacd468cf14e" >
+		<http:listener doc:name="Listener" doc:id="cfd849da-8206-4b80-8eb0-474fa83fa84e" config-ref="HTTP_Listener_config" path="test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2080764d-a840-4b45-ae37-1f356ec711fe" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="65d50c57-bcd6-4ad8-bab0-fcb083c0857f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+[1,2,3,4,5,6,7,8,9]  reduce $+$$]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
